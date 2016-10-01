@@ -1,8 +1,6 @@
 __author__ = 'Bamba'
 
 
-import os
-import os.path
 import csv
 import scipy.io
 import json
@@ -25,7 +23,7 @@ def load_from_csv_file():
 
         for row in reader:
             values.append(fetch_meta_data(metafields, row))
-    return values
+    return metafields, values
 
 
 def load_from_mat_file(filename):
@@ -34,7 +32,6 @@ def load_from_mat_file(filename):
     mat = scipy.io.loadmat(path + filename)
     keys = list(mat['data'].dtype.fields)
 
-    data["keys"] = keys
     for el in keys:
         data[el] = []
         for itm in mat['data'][el][0][0]:
