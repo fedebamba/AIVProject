@@ -4,7 +4,7 @@ __author__ = 'Bamba'
 import csv
 import scipy.io
 import json
-
+import os
 
 path = ""
 csv_filename = ""
@@ -40,6 +40,13 @@ def load_from_mat_file(filename):
     return data
 
 
+def load_every_mat_in_dir():
+    for filename in os.listdir(path):
+        if filename.split(".")[1] == "mat":
+            yield filename.split(".")[0], load_from_mat_file(filename)
+
+
+
 def fetch_meta_data(metafields, row):
     md = {}
     for f in metafields:
@@ -48,5 +55,3 @@ def fetch_meta_data(metafields, row):
         else:
             md[f] = row[metafields.index(f)]
     return md
-
-print(load_from_csv_file())
