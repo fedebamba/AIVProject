@@ -2,6 +2,7 @@ __author__ = 'Bamba'
 
 
 import CJSaveus as jc
+import os
 
 
 def aggr_extractor():
@@ -25,22 +26,29 @@ def aggr_extractor():
                     avgspd[joint][j] += sample[joint][i][j] - sample[joint][i-1][j]
             avgspd[joint] = [avgspd[joint][j] / len(sample[joint]) for j in range(0, 3)]
 
+        #find ref in csv
+        ref_csv = None
         for v in values:
             if v["motion_id"] == filename:
-                s["class"] = v["modal_category"]
+                ref_csv = v
 
-        #add data to dict
+        #add values to dict
+        s["id"] = filename
+        s["class"] = ref_csv["modal_category"]
         s["avgspd"] = avgspd
         s["avgpos"] = avgpos
         yield(s)
 
 
-#===================================================================
-a = []
-for d in aggr_extractor():
-    a.append(d)
-    print(".")
+def save(l):
+    with open("culomille.txt", "w+") as file:
+        for el in l:
+            file.write(str(el) + "\n")
 
-with open("culomille.txt", "a+") as file:
-    for el in a:
-        file.write(str(el) + "\n")
+
+#===================================================================
+#===================================================================
+#===================================================================
+
+
+save(aggr_extractor())
